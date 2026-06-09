@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Food Ordering System</title>
+</head>
+<body style="color: black; text-align: center; font-family: sans-serif; background-color: blue; padding: 20px; margin: 0;">
+    <!-- AUTHENTICATION SECTION -->
+    <div id="authSection" style="max-width: 420px; margin: 60px auto; padding: 30px; background-color: whitesmoke; border-radius: 15px; text-align: left; border-top-width: 5px; border-top-style: solid; border-top-color: orange; border-left-width: 1px; border-left-style: solid; border-left-color: gray; border-right-width: 1px; border-right-style: solid; border-right-color: gray; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: gray;">
+        
+        <div style="display: flex; margin-bottom: 25px; border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: gray;">
+            <button onclick="switchTab('login')" id="loginTabBtn" style="flex: 1; padding: 12px; background-color: whitesmoke; border-style: none; font-size: 16px; font-weight: bold; color: orange; border-bottom-width: 3px; border-bottom-style: solid; border-bottom-color: orange; cursor: pointer;">Login</button>
+            <button onclick="switchTab('register')" id="registerTabBtn" style="flex: 1; padding: 12px; background-color: whitesmoke; border-style: none; font-size: 16px; font-weight: bold; color: gray; border-bottom-width: 3px; border-bottom-style: solid; border-bottom-color: whitesmoke; cursor: pointer;">Register (Tengeneza Akaunti)</button>
+        </div>
+        <!-- Login Sub-form -->
+        <div id="loginFormSub">
+            <h3 style="color: orange; margin-top: 0;">Karibu Tena!</h3>
+            <p style="font-size: 13px; color: dimgray; margin-bottom: 20px;">Ingiza majina na nywila uliyotengeneza ili kuagiza chakula.</p>
+            
+            <div style="margin-bottom: 15px;">
+                <label style="font-weight: bold; color: black; display: block; margin-bottom: 8px;">Username:</label>
+                <input type="text" id="loginUser" placeholder="Weka majina yako" style="width: 100%; padding: 12px; border-width: 1px; border-style: solid; border-color: gray; border-radius: 8px; box-sizing: border-box; font-size: 15px; background-color: white; color: black;">
+            </div>
+            <div style="margin-bottom: 20px;">
+                <label style="font-weight: bold; color: black; display: block; margin-bottom: 8px;">Password:</label>
+                <input type="password" id="loginPass" placeholder="Weka nywila yako" style="width: 100%; padding: 12px; border-width: 1px; border-style: solid; border-color: gray; border-radius: 8px; box-sizing: border-box; font-size: 15px; background-color: white; color: black;">
+            </div>
+            <button onclick="handleLogin()" style="background-color: green; color: white; border-style: none; padding: 14px; width: 100%; font-size: 16px; border-radius: 8px; font-weight: bold; cursor: pointer;">
+                Ingia Kwenye Mfumo
+            </button>
+        </div>
+  <!-- Register Sub-form -->
+        <div id="registerFormSub" style="display: none;">
+            <h3 style="color: orange; margin-top: 0;">Tengeneza Akaunti Mpya</h3>
+            <p style="font-size: 13px; color: dimgray; margin-bottom: 20px;">Sajili akaunti yako sasa hivi ili uweze kutumia mfumo huu.</p>
+            
+            <div style="margin-bottom: 15px;">
+                <label style="font-weight: bold; color: black; display: block; margin-bottom: 8px;">Chagua Username:</label>
+                <input type="text" id="regUser" placeholder="Mfano: juma_mzumbe" style="width: 100%; padding: 12px; border-width: 1px; border-style: solid; border-color: gray; border-radius: 8px; box-sizing: border-box; font-size: 15px; background-color: white; color: black;">
+            </div>
+            <div style="margin-bottom: 20px;">
+                <label style="font-weight: bold; color: black; display: block; margin-bottom: 8px;">Weka Password Nguvu:</label>
+                <input type="password" id="regPass" placeholder="Isipungue herufi 6" style="width: 100%; padding: 12px; border-width: 1px; border-style: solid; border-color: gray; border-radius: 8px; box-sizing: border-box; font-size: 15px; background-color: white; color: black;">
+            </div>
+            <button onclick="handleRegister()" style="background-color: green; color: white; border-style: none; padding: 14px; width: 100%; font-size: 16px; border-radius: 8px; font-weight: bold; cursor: pointer;">
+                Kamilisha Usajili
+            </button>
+        </div>
+    </div>
+        >
+       
+    <!-- MAIN APP ORDERING SYSTEM SECTION -->
+    <div id="mainSystemSection" style="display: none; max-width: 800px; margin: 0 auto;">
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; background-color: whitesmoke; padding: 15px 25px; border-radius: 12px; margin-bottom: 25px; border-width: 1px; border-style: solid; border-color: gray;">
+            <div style="text-align: left;">
+                <span style="font-size: 14px; color: dimgray;">Mteja:</span>
+                <strong id="activeUserLabel" style="color: orange; font-size: 16px; display: block;">Mzumbe User</strong>
+            </div>
+            <button onclick="handleLogout()" style="background-color: red; color: white; border-style: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 14px;">Logout</button>
+        </div>
+        <h1 style="color: orange; font-size: 45px; margin-bottom: 10px; font-weight: bold;">
+            WELCOME FOR BEST FOOD
+        </h1>
+        <div style="margin-bottom: 25px;">
+            <img src="images/food.png" alt="Food Image" style="height: 320px; width: 320px; border-radius: 50%; border-width: 5px; border-style: solid; border-color: whitesmoke; object-fit: cover;"/>
+        </div>
+        <p style="font-size: 18px; max-width: 600px; margin: 0 auto 30px auto; line-height: 1.6; font-style: italic; font-weight: bold; color: whitesmoke;">
+            Kindly make order of food of any type you want through our website and we are able to make delivery wherever you are.
+        </p>
+        <div style="margin: 0 auto 25px auto; max-width: 500px; background-color: whitesmoke; padding: 25px; border-radius: 15px; border-width: 2px; border-style: solid; border-color: gray; text-align: left;">
+            
+            <h3 style="color: orange; text-align: center; margin-top: 0; margin-bottom: 25px; font-size: 22px; border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: gray; padding-bottom: 10px;">Select Your Menu & Quantity</h3>
+            
+            <!-- Food Item 1 -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; background-color: white; padding: 10px; border-radius: 8px; border-width: 2px; border-style: dashed; border-color: orange;">
+                <div style="display: flex; flex-direction: column;">
+                    <label style="font-weight: bold; font-size: 17px; color: black;">1. Pilau & Roast Chicken</label>
+                    <span style="font-size: 14px; color: orange; font-weight: bold;">TSh 5,000</span>
+                </div>
+                <input type="number" id="qty1" min="0" max="20" value="0" oninput="calculateTotal()" style="width: 75px; padding: 8px; font-size: 16px; border-radius: 8px; border-width: 1px; border-style: solid; border-color: black; text-align: center; font-weight: bold; color: black; background-color: white;">
+            </div>
+            <!-- Expandable Menu Options Toggle -->
+            <div style="text-align: center; margin-bottom: 20px;">
+                <button type="button" onclick="toggleMoreMenu()" id="toggleMenuBtn" style="background-color: white; color: orange; border-width: 2px; border-style: solid; border-color: orange; padding: 8px 16px; font-size: 14px; border-radius: 20px; cursor: pointer; font-weight: bold;">
+                    + Show More Menu (Onyesha Vyakula Vingine)
+                </button>
+            </div>
+            <!-- Hidden Food Items Segment -->
+            <div id="moreMenuSection" style="display: none; border-top-width: 1px; border-top-style: solid; border-top-color: gray; padding-top: 15px; margin-bottom: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <div style="display: flex; flex-direction: column;">
+                        <label style="font-weight: bold; font-size: 17px; color: black;">2. Ugali & Nyama Choma</label>
+                        <span style="font-size: 14px; color: orange; font-weight: bold;">TSh 6,000</span>
+                    </div>
+                    <input type="number" id="qty2" min="0" max="20" value="0" oninput="calculateTotal()" style="width: 75px; padding: 8px; font-size: 16px; border-radius: 8px; border-width: 1px; border-style: solid; border-color: black; text-align: center; font-weight: bold; color: black; background-color: white;">
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <div style="display: flex; flex-direction: column;">
+                        <label style="font-weight: bold; font-size: 17px; color: black;">3. Kitimoto Choma / Kaanga</label>
+                        <span style="font-size: 14px; color: orange; font-weight: bold;">TSh 8,000</span>
+                    </div>
+                    <input type="number" id="qty3" min="0" max="20" value="0" oninput="calculateTotal()" style="width: 75px; padding: 8px; font-size: 16px; border-radius: 8px; border-width: 1px; border-style: solid; border-color: black; text-align: center; font-weight: bold; color: black; background-color: white;">
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <div style="display: flex; flex-direction: column;">
+                        <label style="font-weight: bold; font-size: 17px; color: black;">4. Wali na Nyama</label>
+                        <span style="font-size: 14px; color: orange; font-weight: bold;">TSh 4,000</span>
+                    </div>
+                    <input type="number" id="qty4" min="0" max="20" value="0" oninput="calculateTotal()" style="width: 75px; padding: 8px; font-size: 16px; border-radius: 8px; border-width: 1px; border-style: solid; border-color: black; text-align: center; font-weight: bold; color: black; background-color: white;">
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <div style="display: flex; flex-direction: column;">
+                        <label style="font-weight: bold; font-size: 17px; color: black;">5. Wali Maharage</label>
+                        <span style="font-size: 14px; color: orange; font-weight: bold;">TSh 2,500</span>
+                    </div>
+                    <input type="number" id="qty5" min="0" max="20" value="0" oninput="calculateTotal()" style="width: 75px; padding: 8px; font-size: 16px; border-radius: 8px; border-width: 1px; border-style: solid; border-color: black; text-align: center; font-weight: bold; color: black; background-color: white;">
+                </div>
+            </div>
+            <!-- Drinks Section -->
+            <div style="margin-top: 25px; border-top-width: 2px; border-top-style: solid; border-top-color: orange; padding-top: 20px;">
+                <h3 style="color: black; text-align: center; margin-top: 0; margin-bottom: 8px; font-size: 20px;">Add Drinks (Optional)</h3>
+                <p style="font-size: 12px; color: dimgray; text-align: center; margin-top: 0; margin-bottom: 20px;">Unaweza kuongeza kinywaji unachopenda hapa chini</p>
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; background-color: white; padding: 8px; border-radius: 8px; border-width: 1px; border-style: solid; border-color: gray;">
+                    <div style="display: flex; flex-direction: column;">
+                        <label style="font-weight: bold; font-size: 16px; color: black;">Fresh Juice (Embe/Kukwaju)</label>
+                        <span style="font-size: 13px; color: orange; font-weight: bold;">TSh 1,500</span>
+                    </div>
+                    <input type="number" id="drinkQty1" min="0" max="20" value="0" oninput="calculateTotal()" style="width: 70px; padding: 6px; font-size: 15px; border-radius: 6px; border-width: 1px; border-style: solid; border-color: black; text-align: center; color: black; background-color: white;">
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; background-color: white; padding: 8px; border-radius: 8px; border-width: 1px; border-style: solid; border-color: gray;">
+                    <div style="display: flex; flex-direction: column;">
+                        <label style="font-weight: bold; font-size: 16px; color: black;">Soda (Coca/Pepsi/Fanta)</label>
+                        <span style="font-size: 13px; color: orange; font-weight: bold;">TSh 1,000</span>
+                    </div>
+                    <input type="number" id="drinkQty2" min="0" max="20" value="0" oninput="calculateTotal()" style="width: 70px; padding: 6px; font-size: 15px; border-radius: 6px; border-width: 1px; border-style: solid; border-color: black; text-align: center; color: black; background-color: white;">
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; background-color: white; padding: 8px; border-radius: 8px; border-width: 1px; border-style: solid; border-color: gray;">
+                    <div style="display: flex; flex-direction: column;">
+                        <label style="font-weight: bold; font-size: 16px; color: black;">Maji ya Kilimanjaro (Baridi)</label>
+                        <span style="font-size: 13px; color: orange; font-weight: bold;">TSh 1,000</span>
+                    </div>
+                    <input type="number" id="drinkQty3" min="0" max="20" value="0" oninput="calculateTotal()" style="width: 70px; padding: 6px; font-size: 15px; border-radius: 6px; border-width: 1px; border-style: solid; border-color: black; text-align: center; color: black; background-color: white;">
+                </div>
+            </div>
+            <hr style="border-style: none; border-top-width: 1px; border-top-style: solid; border-top-color: gray; margin-bottom: 20px; margin-top: 25px;">
+            <!-- Delivery Dropdown Selection -->
+            <h4 style="color: orange; margin-top: 0; margin-bottom: 12px; text-align: center; font-size: 16px;">Select Delivery Location</h4>
+            <div style="margin-bottom: 25px;">
+                <select id="location" style="width: 100%; padding: 12px; border-radius: 8px; border-width: 1px; border-style: solid; border-color: black; font-size: 15px; color: black; background-color: white;">
+                    <option value="">-- Choose Location --</option>
+                    <option value="Mzumbe Campus">Mzumbe Campus (Free)</option>
+                    <option value="Saba Saba / Town">Saba Saba / Town (Free)</option>
+                    <option value="Chamwino">Chamwino (Free)</option>
+                    <option value="Kikuyu / Area D">Kikuyu / Area D (Free)</option>
+                </select>
+            </div>
+            <hr style="border-style: none; border-top-width: 1px; border-top-style: solid; border-top-color: gray; margin-bottom: 20px;">
+            <!-- Promo Codes Segment -->
+            <h4 style="color: orange; margin-top: 0; margin-bottom: 5px; text-align: center; font-size: 16px;">Have a Promo Code?</h4>
+            <p style="font-size: 12px; color: dimgray; text-align: center; margin-top: 0; margin-bottom: 12px;">Tumia code <strong>MZUMBE20</strong> (Min. Order TSh 10,000)</p>
+            <div style="display: flex; gap: 10px; margin-bottom: 25px;">
+                <input type="text" id="promoInput" placeholder="Weka Promo Code" style="flex: 1; padding: 12px; border-radius: 8px; border-width: 1px; border-style: solid; border-color: black; font-size: 14px; text-transform: uppercase; background-color: white; color: black;">
+                <button type="button" onclick="applyPromoCode()" style="background-color: orange; color: white; border-style: none; padding: 10px 22px; font-size: 14px; border-radius: 8px; cursor: pointer; font-weight: bold;">Apply</button>
+            </div>
+            <hr style="border-style: none; border-top-width: 1px; border-top-style: solid; border-top-color: gray; margin-bottom: 20px;">
+            <!-- Dynamic Invoice Summary Dashboard -->
+            <div style="display: flex; flex-direction: column; gap: 8px; font-size: 15px; color: black; margin-bottom: 20px; background-color: white; padding: 15px; border-radius: 8px; border-width: 1px; border-style: solid; border-color: gray;">
+                <div style="display: flex; justify-content: space-between;">
+                    <span>Total Cost (Food + Drinks):</span>
+                    <span style="font-weight: bold; color: black;">TSh <span id="foodPrice">0</span></span>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <span>Delivery Fee:</span>
+                    <span style="color: green; font-weight: bold;">FREE</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; color: red; font-weight: bold;" id="discountRow">
+                    <span>Discount:</span>
+                    <span>- TSh <span id="discountPrice">0</span></span>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 20px; font-weight: bold; color: orange; margin-top: 8px; border-top-width: 2px; border-top-style: dashed; border-top-color: gray; padding-top: 8px;">
+                    <span>Total Bill:</span>
+                    <span>TSh <span id="totalPrice">0</span></span>
+                </div>
+            </div>
+            <hr style="border-style: none; border-top-width: 1px; border-top-style: solid; border-top-color: gray; margin-bottom: 20px;">
+            <!-- Payment Channels Selection -->
+            <h4 style="color: orange; margin-top: 0; margin-bottom: 15px; text-align: center; font-size: 16px;">Select Payment Method</h4>
+            
+            <div style="display: flex; flex-direction: column; gap: 14px; font-size: 15px; margin-bottom: 25px;">
+                <label style="display: flex; align-items: center; cursor: pointer; color: black; background-color: white; padding: 10px; border-radius: 8px; border-width: 1px; border-style: solid; border-color: gray;">
+                    <input type="radio" name="payment" value="mpesa" style="margin-right: 12px;">
+                    <span style="font-weight: bold; color: red;">Vodacom M-Pesa</span>
+                </label>
+                <label style="display: flex; align-items: center; cursor: pointer; color: black; background-color: white; padding: 10px; border-radius: 8px; border-width: 1px; border-style: solid; border-color: gray;">
+                    <input type="radio" name="payment" value="tigopesa" style="margin-right: 12px;">
+                    <span style="font-weight: bold; color: blue;">Tigo Pesa</span>
+                </label>
+                <label style="display: flex; align-items: center; cursor: pointer; color: black; background-color: white; padding: 10px; border-radius: 8px; border-width: 1px; border-style: solid; border-color: gray;">
+                    <input type="radio" name="payment" value="airtelmoney" style="margin-right: 12px;">
+                    <span style="font-weight: bold; color: red;">Airtel Money</span>
+                </label>
+            </div>
+            <!-- Mobile Phone Input & Ultimate Submit Action -->
+            <div style="margin-bottom: 25px;">
+                <label style="display: block; font-weight: bold; color: orange; margin-bottom: 8px; font-size: 15px;">Enter Mobile Money Number:</label>
+                <input type="text" id="phoneInput" placeholder="Mfano: 0712345678" style="width: 100%; padding: 12px; border-radius: 8px; border-width: 1px; border-style: solid; border-color: black; box-sizing: border-box; font-size: 15px; background-color: white; color: black;">
+            </div>
+            <button type="button" onclick="submitOrder()" style="background-color: orange; color: white; border-style: none; padding: 15px; width: 100%; font-size: 18px; border-radius: 8px; font-weight: bold; cursor: pointer;">
+                Confirm & Pay Order Now
+            </button>
+
+            <!-- FEEDBACK SECTION -->
+            <hr style="border-style: none; border-top-width: 1px; border-top-style: solid; border-top-color: gray; margin-bottom: 20px; margin-top: 25px;">
+            <h4 style="color: orange; margin-top: 0; margin-bottom: 5px; text-align: center; font-size: 16px;">Toa Maoni Yako (Feedback)</h4>
+            <p style="font-size: 12px; color: dimgray; text-align: center; margin-top: 0; margin-bottom: 12px;">Tafadhali tuachie maoni yako baada ya kupokea oda yako.</p>
+            <div style="margin-bottom: 15px;">
+                <textarea id="feedbackInput" placeholder="Andika maoni yako hapa kuhusu huduma yetu..." style="width: 100%; height: 80px; padding: 12px; border-radius: 8px; border-width: 1px; border-style: solid; border-color: black; box-sizing: border-box; font-size: 14px; background-color: white; color: black; resize: vertical; font-family: sans-serif;"></textarea>
+            </div>
+            <button type="button" onclick="submitFeedback()" style="background-color: green; color: white; border-style: none; padding: 12px; width: 100%; font-size: 16px; border-radius: 8px; font-weight: bold; cursor: pointer;">
+                Submit Feedback
+            </button>
+        </div>
+    </div>
+    <!-- CORE FUNCTIONAL SYSTEM CONTROLLER SCRIPTS -->
+    <script>
+        let registeredUsers = { "juma_mzumbe": "123456" }; 
+        let activeUser = "";
+        let promoApplied = false;
+        function switchTab(tab) {
+            const loginForm = document.getElementById('loginFormSub');
+            const regForm = document.getElementById('registerFormSub');
+            const loginBtn = document.getElementById('loginTabBtn');
+            const regBtn = document.getElementById('registerTabBtn');
+            if (tab === 'login') {
+                loginForm.style.display = 'block';
+                regForm.style.display = 'none';
+                loginBtn.style.borderBottomColor = 'orange';
+                loginBtn.style.color = 'orange';
+                regBtn.style.borderBottomColor = 'whitesmoke';
+                regBtn.style.color = 'gray';
+            } else {
+                loginForm.style.display = 'none';
+                regForm.style.display = 'block';
+                loginBtn.style.borderBottomColor = 'whitesmoke';
+                loginBtn.style.color = 'gray';
+                regBtn.style.borderBottomColor = 'orange';
+                regBtn.style.color = 'orange';
+            }
+        }
+        function handleRegister() {
+            const user = document.getElementById('regUser').value.trim();
+            const pass = document.getElementById('regPass').value;
+            if(user === "" || pass.length < 6) {
+                alert("Tafadhali kamilisha maelezo sahihi. nywila isipungue herufi 6.");
+                return;
+            }
+            if(registeredUsers[user]) {
+                alert("Username hii imeshatumika tayari!");
+                return;
+            }
+            registeredUsers[user] = pass;
+            alert("Usajili Umefanikiwa! Tafadhali ingia sasa.");
+            switchTab('login');
+        }
+        function handleLogin() {
+            const user = document.getElementById('loginUser').value.trim();
+            const pass = document.getElementById('loginPass').value;
+            if(registeredUsers[user] && registeredUsers[user] === pass) {
+                activeUser = user;
+                document.getElementById('activeUserLabel').innerText = activeUser;
+                document.getElementById('authSection').style.display = 'none';
+                document.getElementById('mainSystemSection').style.display = 'block';
+            } else {
+                alert("Username au Password si sahihi!");
+            }
+        }
+        function handleLogout() {
+            activeUser = "";
+            promoApplied = false;
+            document.getElementById('promoInput').value = "";
+            if(document.getElementById('feedbackInput')) { document.getElementById('feedbackInput').value = ""; }
+            for(let i=1; i<=5; i++) { document.getElementById('qty'+i) ? document.getElementById('qty'+i).value = 0 : null; }
+            for(let i=1; i<=3; i++) { document.getElementById('drinkQty'+i).value = 0; }
+            calculateTotal();
+            
+            document.getElementById('mainSystemSection').style.display = 'none';
+            document.getElementById('authSection').style.display = 'block';
+        }
+        function toggleMoreMenu() {
+            const section = document.getElementById('moreMenuSection');
+            const btn = document.getElementById('toggleMenuBtn');
+            if (section.style.display === 'none') {
+                section.style.display = 'block';
+                btn.innerText = '- Hide More Menu (Ficha Vyakula Vingine)';
+            } else {
+                section.style.display = 'none';
+                btn.innerText = '+ Show More Menu (Onyesha Vyakula Vingine)';
+            }
+        }
+        function calculateTotal() {
+            const foodPrices = [5000, 6000, 8000, 4000, 2500];
+            const drinkPrices = [1500, 1000, 1000];
+            let grossFoodCost = 0;
+            for (let i = 1; i <= 5; i++) {
+                let qtyEl = document.getElementById('qty' + i);
+                let qty = qtyEl ? parseInt(qtyEl.value) || 0 : 0;
+                if(qty < 0) qty = 0;
+                grossFoodCost += qty * foodPrices[i - 1];
+            }
+            let grossDrinkCost = 0;
+            for (let i = 1; i <= 3; i++) {
+                let qtyEl = document.getElementById('drinkQty' + i);
+                let qty = qtyEl ? parseInt(qtyEl.value) || 0 : 0;
+                if(qty < 0) qty = 0;
+                grossDrinkCost += qty * drinkPrices[i - 1];
+            }
+            let subtotal = grossFoodCost + grossDrinkCost;
+            let discount = 0;
+            if (promoApplied) {
+                if (subtotal >= 10000) {
+                    discount = Math.round(subtotal * 0.20);
+                } else {
+                    promoApplied = false;
+                    alert("Promo Imefutwa kiotomatiki kwani jumla ya gharama imeshuka chini ya TSh 10,000");
+                }
+            }
+            let totalBill = subtotal - discount;
+            document.getElementById('foodPrice').innerText = subtotal.toLocaleString();
+            document.getElementById('discountPrice').innerText = discount.toLocaleString();
+            document.getElementById('totalPrice').innerText = totalBill.toLocaleString();
+        }
+        function applyPromoCode() {
+            const promoCode = document.getElementById('promoInput').value.trim().toUpperCase();
+            const currentSubtotal = parseInt(document.getElementById('foodPrice').innerText.replace(/,/g, '')) || 0;
+            if (promoCode === "MZUMBE20") {
+                if (currentSubtotal >= 10000) {
+                    promoApplied = true;
+                    alert("Promo Code Imekubaliwa! Umepata punguzo la 20%");
+                    calculateTotal();
+                } else {
+                    alert("Ili utumie code hii, Hakikisha thamani ya agizo lako inazidi TSh 10,000");
+                }
+            } else {
+                alert("Promo Code isiyo sahihi au imekwisha muda wake!");
+            }
+        }
+        function submitOrder() {
+            const finalBill = parseInt(document.getElementById('totalPrice').innerText.replace(/,/g, '')) || 0;
+            const location = document.getElementById('location').value;
+            const paymentChannel = document.querySelector('input[name="payment"]:checked');
+            const phone = document.getElementById('phoneInput').value.trim();
+            if (finalBill <= 0) {
+                alert("Tafadhali chagua chakula au kinywaji kwanza!");
+                return;
+            }
+            if (location === "") {
+                alert("Tafadhali chagua mahali unapoishi (Delivery Location)!");
+                return;
+            }
+            if (!paymentChannel) {
+                alert("Tafadhali chagua mtandao wa malipo!");
+                return;
+            }
+            if (phone === "" || phone.length < 9) {
+                alert("Weka namba sahihi ya simu ya malipo!");
+                return;
+            }
+            alert(`Agizo Lako Limepokelewa!\n\nMahali: ${location}\nJumla ya Malipo: TSh ${finalBill.toLocaleString()}\nMtandao: ${paymentChannel.value.toUpperCase()}\nNamba: ${phone}\n\nSubiri ujumbe wa muamala kwenye simu yako kisha thibitisha kwa siri yako (PIN). Shukrani!`);
+        }
+        function submitFeedback() {
+            const feedback = document.getElementById('feedbackInput').value.trim();
+            if (feedback === "") {
+                alert("Tafadhali andika maoni yako kwanza kabla ya kusubmit!");
+                return;
+            }
+            alert("Ahsante sana! Maoni yako yamepokelewa kwa mafanikio.");
+            document.getElementById('feedbackInput').value = "";
+        }
+    </script>
+</body>
+</html>
